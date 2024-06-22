@@ -1,11 +1,20 @@
 import Image from 'next/image';
 import React from 'react';
+import { headers } from 'next/headers';
 
 const getTime = async () => {
-    const res = await fetch('http://localhost:3000/time', {next: {revalidate: 5}})
-    const data = await res.json()
+    const headersList = headers();
+  
+    const host = headersList.get("host"); // to get domain
+    const nextURL = headersList.get("next-url"); // to get url
+    // console.log(host, nextURL);
+    const isS = host == "localhost:3000" ? "" : "s";
+    const res = await fetch(`http${isS}://${host}/time`, {
+      next: { revalidate: 5 },
+    });
+    const data = await res.json();
     return data.currentTime;
-}
+  };
 
 const page = async() => {
     const currentTime = await getTime();
