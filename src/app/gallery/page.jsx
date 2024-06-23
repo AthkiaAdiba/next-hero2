@@ -1,25 +1,19 @@
 import Image from 'next/image';
 import React from 'react';
-import { headers } from 'next/headers';
 
-// const getTime = async () => {
-//     const headersList = headers();
-  
-//     const host = headersList.get("host"); // to get domain
-//     const nextURL = headersList.get("next-url"); // to get url
-//     // console.log(host, nextURL);
-//     const isS = host == "localhost:3000" ? "" : "s";
-//     const res = await fetch(`http${isS}://${host}/time`, {
-//       next: { revalidate: 5 },
-//     });
-//     const data = await res.json();
-//     return data.currentTime;
-//   };
+
+const getTime = async () => {
+    const res = await fetch("http://localhost:3000/time", { cache: 'no-store' });
+    const data = await res.json()
+    console.log(data);
+    return data.currentTime;
+};
 
 
 
-const page = async() => {
-    const currentTime = new Date().toLocaleTimeString();
+const page = async () => {
+
+    const currentTime = await getTime();
 
     return (
         <div className='min-h-screen px-12 py-24'>
